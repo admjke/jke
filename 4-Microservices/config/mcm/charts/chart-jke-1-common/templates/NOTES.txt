@@ -1,1 +1,0 @@
-1. The common resources such as ClusterRole, RoleBinding, secret docker-registry, config map and secret are created.
