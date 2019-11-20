@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jke-bankstreet
+  namespace: hclapp
+  labels:
+    app: jke-bankstreet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jke-bankstreet
+  template:
+    metadata:
+      labels:
+        app: jke-bankstreet
+    spec:
+      containers:
+        - image: gandigit/jke-bankstreet:latest
+          name: jke-bankstreet
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: http-server
+      imagePullSecrets:
+        - name: jke-docker-registry-secret

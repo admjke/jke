@@ -1,0 +1,114 @@
+# File Details
+EnvID: 01-uk-hclcnlabs
+
+# Namespace
+nameSpace: jke-app
+
+#-------------------- Images --------------------
+
+# Docker image pull secret
+dockerImagePullSecretValue: eyJhdXRocyI6eyJldWNsdXN0ZXIuaWNwOjg1MDAiOnsidXNlcm5hbWUiOiJhZG1pbiIsInBhc3N3b3JkIjoiSUNQYWRtaW4wMSIsImVtYWlsIjoibnVsbCIsImF1dGgiOiJZV1J0YVc0NlNVTlFZV1J0YVc0d01RPT0ifX19
+
+# Image Repositry - Private Registry
+# imageRepositoryWeb: docker-registry-default.apps.ocp.uk.hclcnlabs.com/jke-app/jke-web
+# imageRepositoryBatch: docker-registry-default.apps.ocp.uk.hclcnlabs.com/jke-batch
+
+# # Image Repositry - Dockerhub
+# imageRepositoryWeb: eucluster.icp:8500/jke-app/jke-web
+# imageRepositoryBatch: eucluster.icp:8500/jke-app/jke-user
+# imageRepositoryStock: eucluster.icp:8500/jke-app/jke-financialplan
+# imageRepositoryInterest: eucluster.icp:8500/jke-app/jke-notification
+# imageRepositoryWeb: hubcluster.icp:8500/jke-app/jke-web
+# imageRepositoryBatch: hubcluster.icp:8500/jke-app/jke-user
+# imageRepositoryStock: hubcluster.icp:8500/jke-app/jke-financialplan
+# imageRepositoryInterest: hubcluster.icp:8500/jke-app/jke-notification
+imageRepositoryWeb: gandigit/jke-web
+imageRepositoryBatch: gandigit/jke-batch
+imageRepositoryStock: gandigit/jke-stock
+imageRepositoryInterest: gandigit/jke-interest
+imageRepositoryBankstreet: gandigit/jke-bankstreet
+
+#-------------------- Ports --------------------
+
+serviceTypeWeb: NodePort
+serviceTypeBatch: NodePort
+serviceTypeInterest: NodePort
+serviceTypeStock: NodePort
+serviceTypeBankstreet: NodePort
+
+serviceTargetPortWeb: 9030
+serviceTargetPortBatch: 9031
+serviceTargetPortInterest: 9032
+serviceTargetPortStock: 9033
+serviceTargetPortBankstreet: 8048
+
+serviceNodePortWeb: 31330
+serviceNodePortBatch: 31331
+serviceNodePortInterest: 31332
+serviceNodePortStock: 31333
+serviceNodePortBankstreet: 31334
+
+# Replica count
+replicaCountWeb: 1
+replicaCountBatch: 1
+replicaCountInterest: 1
+replicaCountStock: 1
+replicaCountBankstreet: 1
+#-------------------- URLs --------------------
+
+# Interest URL
+jkeServiceUrlInterestAll: https://apigw.apps.ocp.uk.hclcnlabs.com/demo/dev/jkeinterest/api/interest/interestRates
+jkeServiceUrlInterestFD: https://apigw.apps.ocp.uk.hclcnlabs.com/demo/dev/jkeinterest/api/interest//interestRatesByCategory?category=FD
+jkeServiceUrlInterestRD: https://apigw.apps.ocp.uk.hclcnlabs.com/demo/dev/jkeinterest/api/interest//interestRatesByCategory?category=RD
+
+# Stock URL
+jkeServiceUrlStockAll: http://icp-console.apps.ocp.uk.hclcnlabs.com:31333/jkestock/api/stock/stocks
+
+#-------------------- DB Properties --------------------
+
+dbHostName: 172.16.70.101
+dbPort: 60006
+dbName: r1ilon3
+dbUsername: db2inst1
+dbPassword: db2inst1
+
+#-------------------- MQ Properties --------------------
+
+mqQueueManager: QM1
+mqHostName: icp-console.apps.ocp.uk.hclcnlabs.com
+mqPort: 32443
+
+#static
+mqQueueNameReq: JKE.ACCT.REQ
+mqQueueNameInt: JKE.ACCT.INT
+mqQueueNameRes: JKE.ACCT.RES
+mqChannel: DEV.APP.SVRCONN
+jkeMqAceEnabled: true
+
+#-------------------- Notifications --------------------
+# Notifications - Not used
+jkeNotificationEnabled: true
+jkeNotificationFrom: <<TO_BE_REPLACED>>
+jkeNotificationSendgridKey: <<TO_BE_REPLACED>>
+
+notificationFrom: admjke@gmail.com
+notificationCc: admjke@gmail.com
+
+#-------------------- MCM --------------------
+
+# Replica count
+clusterReplicaCountWeb: 1
+clusterReplicaCountBatch: 1
+clusterReplicaCountInterest: 1
+clusterReplicaCountStock: 1
+clusterReplicaCountBankstreet: 1
+
+# Cluster
+targetCluster:
+  labelSelector:
+    matchExpressionsPrimary:
+    - key: datacenter
+      operator: In
+      values:
+      - us-east
+  compliances: ""

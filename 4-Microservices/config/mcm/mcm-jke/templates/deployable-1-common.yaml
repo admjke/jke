@@ -1,0 +1,17 @@
+apiVersion: mcm.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: {{ template "jke.application.fullname" . }}-common
+  labels:
+    app: {{ template "jke.application.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    name: {{ template "jke.application.fullname" . }}-common
+    servicekind: ApplicationService
+spec:
+  deployer:
+    kind: helm
+    helm:
+      chartURL: https://github.com/GanDigit/jke-helm/raw/master/jke-1-common-v1.tgz
+      namespace: {{ .Values.appInClusterNamespace }}

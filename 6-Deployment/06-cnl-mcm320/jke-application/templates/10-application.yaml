@@ -1,0 +1,23 @@
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  namespace: {{ .Values.nameSpace }}
+  name: jke-application
+  labels:
+    app: jke-application
+    name: jke-application
+spec:
+  selector:
+    matchExpressions:
+    - key: app
+      operator: In
+      values:
+      - jke-application
+      - jke-web
+      - jke-batch
+      - jke-interest
+      - jke-stock
+      - jke-bankstreet
+  componentKinds:
+  - group: core
+    kind: Pods

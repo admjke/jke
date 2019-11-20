@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: <PROJECT>-web
+  # namespace: <PROJECT>
+  labels:
+    app: <PROJECT>-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: <PROJECT>-web
+  template:
+    metadata:
+      labels:
+        app: <PROJECT>-web
+    spec:
+      containers:
+        - image: <DOCKER_IMAGE>
+          name: <PROJECT>-web
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: http-server
+      imagePullSecrets:
+        - name: <PROJECT>-secret

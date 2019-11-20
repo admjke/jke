@@ -1,0 +1,164 @@
+
+apiVersion: mcm.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  namespace: {{ .Values.nameSpace }}
+  name: jke-deployable-deployment-batch
+  labels:
+    app: jke-application
+    servicekind: ApplicationService
+spec:
+  deployer:
+    kind: Deployment
+    kube:
+      namespace: {{ .Values.nameSpace }}
+      template:
+        metadata:
+          name: jke-batch
+        spec:
+          selector:
+            matchLabels:
+              app: jke-application
+              release: {{ .Release.Name }}
+              subname: batch
+          replicas: {{ .Values.replicaCountBatch }}
+          template:
+            metadata:
+              labels:
+                app: jke-application
+                release: {{ .Release.Name }}
+                subname: batch
+            spec:
+              containers:
+                - name: {{ .Chart.Name }}
+                  image: "{{ .Values.imageRepositoryBatch }}:latest"
+                  imagePullPolicy: Always
+                  ports:
+                    - name: http
+                      containerPort: {{ .Values.serviceTargetPortBatch }}
+                      protocol: TCP
+                    - name: https
+                      containerPort: 8082
+                  env:
+                  - name: GET_HOSTS_FROM
+                    value: dns
+                  # DB2 Database
+                  - name: spring.dbprob.hostname
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: spring.dbprob.hostname
+                  - name: spring.dbprob.port
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: spring.dbprob.port
+                  - name: spring.dbprob.dbname
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: spring.dbprob.dbname
+                  - name: spring.datasource.url
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: spring.datasource.url
+                  - name: spring.datasource.username
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: spring.datasource.username
+                  - name: spring.datasource.password
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: spring.datasource.password
+                  # MQ
+                  - name: ibm.mq.queueManager
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: ibm.mq.queueManager
+                  - name: ibm.mq.channel
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: ibm.mq.channel
+                  - name: ibm.mq.connName
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: ibm.mq.connName
+                  - name: ibm.mq.queueName.req
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: ibm.mq.queueName.req
+                  - name: ibm.mq.queueName.int
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: ibm.mq.queueName.int
+                  - name: ibm.mq.queueName.res
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: ibm.mq.queueName.res
+                  - name: jke.mq.ace.enabled
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: jke.mq.ace.enabled 
+                  # Notification
+                  - name: jke.notification.enabled
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: jke.notification.enabled
+                  - name: jke.notification.from
+                    valueFrom:
+                    configMapKeyRef:
+                      name: jke-config-map
+                      key: jke.notification.from                  
+                  - name: jke.notification.sendgrid.key
+                    valueFrom:
+                    configMapKeyRef:
+                      name: jke-config-map
+                      key: jke.notification.sendgrid.key
+              imagePullSecrets:
+                - name: jke-prerequisite-icp-ocp-image-pull-secret
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: jke-deployable-service-batch
+  labels:
+    app: jke-application
+    name: jke-depolyable-service-batch
+    servicekind: ApplicationService
+spec:
+  deployer:
+    kind: Service
+    kube:
+      namespace: {{ .Values.nameSpace }}
+      template:
+        metadata:
+          name: jke-batch
+          labels:
+            app: jke-application
+          annotations:
+            prometheus.io/scrape: 'true' 
+            prometheus.io/port: '{{ .Values.serviceTargetPortBatch }}'
+            prometheus.io/path: '/jkebatch/actuator/prometheus'
+            mcm.ibm.com/service-discovery: "{}"            
+        spec:
+          type: {{ .Values.serviceTypeBatch }}
+          ports:
+            - name: my-http
+              port: {{ .Values.serviceTargetPortBatch }}
+              targetPort: {{ .Values.serviceTargetPortBatch }}
+              nodePort: {{ .Values.serviceNodePortBatch }}
+          selector:
+            app: jke-application
+            release: {{ .Release.Name }}
+            subname: batch

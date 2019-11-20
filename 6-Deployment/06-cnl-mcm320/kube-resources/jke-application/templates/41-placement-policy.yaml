@@ -1,0 +1,107 @@
+---
+# Source: jke-application/templates/41-placement-policy.yaml
+apiVersion: mcm.ibm.com/v1alpha1
+kind: PlacementPolicy
+metadata:
+  namespace: jke-app
+  name: jke-web
+  labels:
+    app: jke-application
+    name: jke-web
+spec:
+  clusterReplicas: 1
+  clusterLabels:
+    matchExpressions:
+      - key: datacenter
+        operator: In
+        values:
+        - us-east
+       
+    matchLabels:
+  resourceHint:
+    type: cpu
+  compliances: 
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: PlacementPolicy
+metadata:
+  namespace: jke-app
+  name: jke-batch
+  labels:
+    app: jke-application
+    name: jke-batch
+spec:
+  clusterReplicas: 1
+  clusterLabels:
+    matchExpressions:
+      - key: datacenter
+        operator: In
+        values:
+        - us-east
+         
+  resourceHint:
+    type: cpu
+  compliances: 
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: PlacementPolicy
+metadata:
+  namespace: jke-app
+  name: jke-interest
+  labels:
+    app: jke-application
+    name: jke-interest
+spec:
+  clusterReplicas: 1
+  clusterLabels:
+    matchExpressions:
+      - key: datacenter
+        operator: In
+        values:
+        - us-east
+         
+  resourceHint:
+    type: cpu
+  compliances: 
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: PlacementPolicy
+metadata:
+  namespace: jke-app
+  name: jke-stock
+  labels:
+    app: jke-application
+    name: jke-stock
+spec:
+  clusterReplicas: 1
+  clusterLabels:
+    matchExpressions:
+      - key: datacenter
+        operator: In
+        values:
+        - us-east
+         
+  resourceHint:
+    type: cpu
+  compliances: 
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: PlacementPolicy
+metadata:
+  namespace: jke-app
+  name: jke-bankstreet
+  labels:
+    app: jke-application
+    name: jke-bankstreet
+spec:
+  clusterReplicas: 1
+  clusterLabels:
+    matchExpressions:
+      - key: datacenter
+        operator: In
+        values:
+        - us-east
+         
+  resourceHint:
+    type: cpu
+  compliances:     

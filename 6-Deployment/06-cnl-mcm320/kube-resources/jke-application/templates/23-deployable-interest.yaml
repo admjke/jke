@@ -1,0 +1,82 @@
+---
+# Source: jke-application/templates/23-deployable-interest.yaml
+apiVersion: mcm.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  namespace: jke-app
+  name: jke-deployable-deployment-interest
+  labels:
+    app: jke-application
+    servicekind: ApplicationService
+spec:
+  deployer:
+    kind: Deployment
+    kube:
+      namespace: jke-app
+      template:
+        metadata:
+          name: jke-interest
+        spec:
+          selector:
+            matchLabels:
+              app: jke-application
+              release: release-name
+              subname: interest
+          replicas: 1
+          template:
+            metadata:
+              labels:
+                app: jke-application
+                release: release-name
+                subname: interest
+            spec:
+              containers:
+                - name: jke-application
+                  image: "gandigit/jke-interest:latest"
+                  imagePullPolicy: Always
+                  ports:
+                    - name: http
+                      containerPort: 9032
+                      protocol: TCP
+                    - name: https
+                      containerPort: 8082
+                  env:
+                  - name: GET_HOSTS_FROM
+                    value: dns
+              imagePullSecrets:
+                - name: jke-prerequisite-icp-ocp-image-pull-secret
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: jke-deployable-service-interest
+  labels:
+    app: jke-application
+    name: jke-deployable-service-interest
+    servicekind: ApplicationService
+spec:
+  deployer:
+    kind: Service
+    kube:
+      namespace: jke-app
+      template:
+        metadata:
+          name: jke-interest
+          labels:
+            app: jke-application
+          annotations:
+            prometheus.io/scrape: 'true' 
+            prometheus.io/port: '9032'
+            prometheus.io/path: '/actuator/prometheus'
+            mcm.ibm.com/service-discovery: "{}"            
+        spec:
+          type: NodePort
+          ports:
+            - name: my-http
+              port: 9032
+              targetPort: 9032
+              nodePort: 31332
+          selector:
+            app: jke-application
+            release: release-name
+            subname: interest

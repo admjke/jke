@@ -1,0 +1,34 @@
+apiVersion: mcm.ibm.com/v1alpha1
+kind: ApplicationRelationship
+metadata:
+  namespace: {{ .Values.nameSpace }}
+  name: jke-deployment-stock
+  labels:
+    app: jke-application
+    name: jke-deployment-stock
+spec:
+  type: contains
+  destination:
+    kind: Deployable
+    name: jke-deployable-deployment-stock
+  source:
+    kind: Application
+    name: jke-application
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: ApplicationRelationship
+metadata:
+  namespace: {{ .Values.nameSpace }}
+  name: jke-service-stock
+  labels:
+    app: jke-application
+    name: jke-service-stock
+spec:
+  type: contains
+  destination:
+    kind: Deployable
+    name: jke-deployable-service-stock
+  source:
+    kind: Application
+    name: jke-application
+---

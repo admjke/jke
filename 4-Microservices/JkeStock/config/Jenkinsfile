@@ -1,0 +1,37 @@
+node {
+
+    def APP_NAME = "jke-stock"
+    def IMAGE_TAG_NAME = "${env.JKEAPP_DOCKER_REGISTRY}/${env.JKEAPP_NAMESPACE}/jke-stock:latest"
+    def DOCKER_REGISTRY = "${env.JKEAPP_DOCKER_REGISTRY}"
+    def NAMESPACE = "${env.JKEAPP_NAMESPACE}"
+
+    stage("Compile") {
+        sh 'echo "Compile Started ...."'
+        checkout scm
+        
+        sh "cp -r 4-Microservices/JkeStock/* ./"
+        sh "/opt/maven/bin/mvn package"
+        sh 'echo "Compile Completed ...."'
+    }
+
+    stage("Docker build") {
+        sh 'echo "build Started ...."'
+        sh "docker build -f config/Dockerfile -t ${IMAGE_TAG_NAME} ."
+        sh 'echo "build Completed ...."'
+    }
+
+    stage('Docker push') {
+        withCredentials([usernamePassword(credentialsId: 'jke-credentials',
+                                        usernameVariable: 'USERNAME',
+                                        passwordVariable: 'PASSWORD')]) {
+            sh """
+            #!/bin/bash
+
+            echo "docker push  Started ...."
+            docker login -u ${USERNAME} -p ${PASSWORD} ${DOCKER_REGISTRY}
+            docker push ${IMAGE_TAG_NAME}
+            echo "docker push  completed ...."
+            """
+        }
+    }
+}

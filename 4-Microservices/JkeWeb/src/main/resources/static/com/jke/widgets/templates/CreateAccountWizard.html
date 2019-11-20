@@ -1,0 +1,180 @@
+<div class="CreateAccountWizard">
+
+    <div dojoattachpoint="createNewAccountHeader" style="display: none;">
+        <h2>
+            Create New Account request
+        </h2>
+        <p>
+            Use the wizard below to create a new account request.
+        </p>
+    </div>
+    <div dojoattachpoint="modifyNewAccountHeader" style="display: none;">
+        <h2>
+            Modify New Account request
+        </h2>
+        <p>
+            Use the wizard below to modify your new account request.
+        </p>
+    </div>
+    <div dojoType="dojox.widget.Wizard" doneButtonLabel="Confirm" dojoattachpoint="contWizard" class="wizard">
+				<div dojoType="dojox.widget.WizardPane" class="page" title="Contribution Setup" canGoBack="false" dojoattachpoint="createAccountPane" style="height: 300px; width: 400px">
+						<table>
+								<tbody>
+										<tr>
+                                            <td style="width: 100px;" >User Name:</td>
+                                            <td>
+                                                <div dojotype="dijit.form.TextBox" dojoattachpoint="userNameBox" style="width: 200px;"></div>
+                                                <div dojotype="dijit.form.TextBox" dojoattachpoint="accountIdBox" style="width: 200px; display:none;"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 100px;">First Name:</td>
+                                            <td>
+                                                <div dojotype="dijit.form.TextBox" dojoattachpoint="firstNameBox" style="width: 200px;"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 100px;">Last Name:</td>
+                                            <td>
+                                                <div dojotype="dijit.form.TextBox" dojoattachpoint="lastNameBox" style="width: 200px;"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 100px;">Company Name:</td>
+                                            <td>
+                                                <div dojotype="dijit.form.TextBox" dojoattachpoint="companyNameBox" style="width: 200px;"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 100px;">Home Address:</td>
+                                            <td>
+                                                <div dojotype="dijit.form.TextBox" dojoattachpoint="homeAddressBox" style="width: 200px;"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 100px;">Office Address:</td>
+                                            <td>
+                                                <div dojotype="dijit.form.TextBox" dojoattachpoint="officeAddressBox" style="width: 200px;"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 100px;">mobileNo:</td>
+                                            <td>
+                                                <div dojotype="dijit.form.TextBox" dojoattachpoint="mobileNoBox" style="width: 200px;"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 100px;">alternateMobileNo:</td>
+                                            <td>
+                                                <div dojotype="dijit.form.TextBox" dojoattachpoint="alternateMobileNoBox" style="width: 200px;"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 100px;">emailId:</td>
+                                            <td>
+                                                <div dojotype="dijit.form.TextBox" dojoattachpoint="emailIdBox" style="width: 200px;"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 100px;">Account Type : </td>
+                                            <td>
+                                                <div dojotype="dijit.form.TextBox" dojoattachpoint="accountTypeBox" style="width: 200px;"></div>
+                                                <BR>(CB/SB/FD)
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="width: 100px;">KYC Documents:</td>
+                                            <td>
+                                                <div dojotype="dijit.form.TextBox" dojoattachpoint="kycDocumentsBox" style="width: 200px;"></div>
+                                                <BR>(DL/SSN/LEASE/PAN/Passport)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 100px;">Remarks:</td>
+                                            <td>
+                                                <div dojotype="dijit.form.TextBox" dojoattachpoint="remarksBox" style="width: 200px;"></div>
+                                            </td>
+                                        </tr>
+								</tbody>
+						</table>
+						<div dojoattachpoint="errorMessage" style="display: none; color: red">
+								Enter a valid balance to continue.
+						</div>
+				</div>
+				<div dojoType="dojox.widget.WizardPane" class="page" title="Confirmation" dojoattachpoint="donePane" style="height: 300px; width: 400px">
+						<h3>
+								Confirm your values:
+						</h3>
+						<div>
+								<table style="margin-left: 20px;">
+										<tbody>
+												<tr>
+                                                    <td>User Name:</td>
+                                                    <td><span style="font-weight: bold" dojoattachpoint="userNameSummary"></span>
+                                                    </td>
+												</tr>
+                                                <tr>
+                                                    <td>First Name:</td>
+                                                    <td><span style="font-weight: bold" dojoattachpoint="firstNameSummary"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Last Name:</td>
+                                                    <td><span style="font-weight: bold" dojoattachpoint="lastNameSummary"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Company Name:</td>
+                                                    <td><span style="font-weight: bold" dojoattachpoint="companyNameSummary"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Home Address:</td>
+                                                    <td><span style="font-weight: bold" dojoattachpoint="homeAddressSummary"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Office Address:</td>
+                                                    <td><span style="font-weight: bold" dojoattachpoint="officeAddressSummary"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Mobile No:</td>
+                                                    <td><span style="font-weight: bold" dojoattachpoint="mobileNoSummary"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Alternate Mobile:</td>
+                                                    <td><span style="font-weight: bold" dojoattachpoint="alternateMobileNoSummary"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Email id:</td>
+                                                    <td><span style="font-weight: bold" dojoattachpoint="emailIdSummary"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Account Type:</td>
+                                                    <td><span style="font-weight: bold" dojoattachpoint="accountTypeSummary"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>KYC Documents:</td>
+                                                    <td><span style="font-weight: bold" dojoattachpoint="kycDocumentsSummary"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Remarks:</td>
+                                                    <td><span style="font-weight: bold" dojoattachpoint="remarksSummary"></span>
+                                                    </td>
+                                                </tr>
+                                        </tbody>
+								</table>
+								<p>
+										By clicking Confirm, you submit the new account <span dojoattachpoint="accountSummary"></span> to be processed.
+								</p>
+						</div>
+				</div>
+		</div>
+</div>

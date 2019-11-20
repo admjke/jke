@@ -1,0 +1,76 @@
+apiVersion: mcm.ibm.com/v1alpha1
+kind: ApplicationRelationship
+metadata:
+  name: {{ template "jke.application.fullname" . }}-web
+  labels:
+    app: {{ template "jke.application.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    name: {{ template "jke.application.fullname" . }}-web
+spec:
+  destination:
+    kind: Deployable
+    name: {{ template "jke.application.fullname" . }}-web
+  source:
+    kind: Application
+    name: {{ template "jke.application.fullname" . }}
+  type: contains
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: ApplicationRelationship
+metadata:
+  name: {{ template "jke.application.fullname" . }}-mq
+  labels:
+    app: {{ template "jke.application.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    name: {{ template "jke.application.fullname" . }}-mq
+spec:
+  destination:
+    kind: Deployable
+    name: {{ template "jke.application.fullname" . }}-mq
+  source:
+    kind: Application
+    name: {{ template "jke.application.fullname" . }}
+  type: usesCreated
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: ApplicationRelationship
+metadata:
+  name: {{ template "jke.application.fullname" . }}-api
+  labels:
+    app: {{ template "jke.application.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    name: {{ template "jke.application.fullname" . }}-api
+spec:
+  destination:
+    kind: Deployable
+    name: {{ template "jke.application.fullname" . }}-api
+  source:
+    kind: Application
+    name: {{ template "jke.application.fullname" . }}
+  type: usesCreated
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: ApplicationRelationship
+metadata:
+  name: {{ template "jke.application.fullname" . }}-bankstreet
+  labels:
+    app: {{ template "jke.application.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    name: {{ template "jke.application.fullname" . }}-bankstreet
+spec:
+  destination:
+    kind: Deployable
+    name: {{ template "jke.application.fullname" . }}-bankstreet
+  source:
+    kind: Application
+    name: {{ template "jke.application.fullname" . }}
+  type: contains
+---

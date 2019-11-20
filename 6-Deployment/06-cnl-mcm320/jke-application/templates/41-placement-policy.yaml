@@ -1,0 +1,85 @@
+apiVersion: mcm.ibm.com/v1alpha1
+kind: PlacementPolicy
+metadata:
+  namespace: {{ .Values.nameSpace }}
+  name: jke-web
+  labels:
+    app: jke-application
+    name: jke-web
+spec:
+  clusterReplicas: {{ .Values.clusterReplicaCountWeb }}
+  clusterLabels:
+    matchExpressions:
+{{ toYaml .Values.targetCluster.labelSelector.matchExpressionsPrimary | indent 6 }} 
+    matchLabels:
+  resourceHint:
+    type: cpu
+  compliances: {{ .Values.targetCluster.compliances }}
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: PlacementPolicy
+metadata:
+  namespace: {{ .Values.nameSpace }}
+  name: jke-batch
+  labels:
+    app: jke-application
+    name: jke-batch
+spec:
+  clusterReplicas: {{ .Values.clusterReplicaCountBatch }}
+  clusterLabels:
+    matchExpressions:
+{{ toYaml .Values.targetCluster.labelSelector.matchExpressionsPrimary | indent 6 }}   
+  resourceHint:
+    type: cpu
+  compliances: {{ .Values.targetCluster.compliances }}
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: PlacementPolicy
+metadata:
+  namespace: {{ .Values.nameSpace }}
+  name: jke-interest
+  labels:
+    app: jke-application
+    name: jke-interest
+spec:
+  clusterReplicas: {{ .Values.clusterReplicaCountInterest }}
+  clusterLabels:
+    matchExpressions:
+{{ toYaml .Values.targetCluster.labelSelector.matchExpressionsPrimary | indent 6 }}   
+  resourceHint:
+    type: cpu
+  compliances: {{ .Values.targetCluster.compliances }}
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: PlacementPolicy
+metadata:
+  namespace: {{ .Values.nameSpace }}
+  name: jke-stock
+  labels:
+    app: jke-application
+    name: jke-stock
+spec:
+  clusterReplicas: {{ .Values.clusterReplicaCountStock }}
+  clusterLabels:
+    matchExpressions:
+{{ toYaml .Values.targetCluster.labelSelector.matchExpressionsPrimary | indent 6 }}   
+  resourceHint:
+    type: cpu
+  compliances: {{ .Values.targetCluster.compliances }}
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: PlacementPolicy
+metadata:
+  namespace: {{ .Values.nameSpace }}
+  name: jke-bankstreet
+  labels:
+    app: jke-application
+    name: jke-bankstreet
+spec:
+  clusterReplicas: {{ .Values.clusterReplicaCountBankstreet }}
+  clusterLabels:
+    matchExpressions:
+{{ toYaml .Values.targetCluster.labelSelector.matchExpressionsPrimary | indent 6 }}   
+  resourceHint:
+    type: cpu
+  compliances: {{ .Values.targetCluster.compliances }}    

@@ -1,0 +1,31 @@
+<div class="AccountListNew">
+		<h2>
+            New Account Requests
+		</h2>
+		<p>Please use this wizard to approve/reject the account requests : </p>
+        <BR>
+        <div dojoattachpoint="createdSuccessMsg" style="display: none; color: blue">
+            New Account request is saved successfully !!!
+        </div>
+        <div dojoattachpoint="approvedSuccessMsg" style="display: none; color: blue">
+            New Account request is approved successfully !!!
+        </div>
+        <div dojoattachpoint="rejectedSuccessMsg" style="display: none; color: blue">
+            New Account request is rejected successfully !!!
+        </div>
+        <div dojoattachpoint="deletedSuccessMsg" style="display: none; color: blue">
+            New Account request is deleted successfully !!!
+        </div>
+        <BR>
+    <table class="mainTable">
+            <tbody dojoattachpoint="tableBody">
+                <tr>
+                    <th class="left" >User Name</th>
+                    <th class="left" >Name</th>
+                    <th class="left" >Contact</th>
+                    <th class="left" >Status</th>
+                    <th class="left" >Actions</th>
+                </tr>
+            </tbody>
+		</table>
+</div>

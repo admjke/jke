@@ -1,0 +1,36 @@
+---
+# Source: jke-application/templates/32-application-relationship-batch.yaml
+apiVersion: mcm.ibm.com/v1alpha1
+kind: ApplicationRelationship
+metadata:
+  namespace: jke-app
+  name: jke-deployment-batch
+  labels:
+    app: jke-application
+    name: jke-deployment-batch
+spec:
+  type: contains
+  destination:
+    kind: Deployable
+    name: jke-deployable-deployment-batch
+  source:
+    kind: Application
+    name: jke-application
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: ApplicationRelationship
+metadata:
+  namespace: jke-app
+  name: jke-service-batch
+  labels:
+    app: jke-application
+    name: jke-service-batch
+spec:
+  type: contains
+  destination:
+    kind: Deployable
+    name: jke-deployable-service-batch
+  source:
+    kind: Application
+    name: jke-application
+---

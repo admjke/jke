@@ -1,0 +1,26 @@
+---
+# Source: jke-prerequisite/templates/role-cluster-role.yaml
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: jke-cluster-role
+  namespace: jke-app
+  labels:
+    app: jke-cluster-role
+    name: jke-cluster-role
+rules:
+- apiGroups:
+  - apps
+  - extensions
+  resources:
+  - deployments
+  - replicasets
+  verbs:
+  - create
+  - delete
+  - deletecollection
+  - get
+  - list
+  - patch
+  - update
+  - watch

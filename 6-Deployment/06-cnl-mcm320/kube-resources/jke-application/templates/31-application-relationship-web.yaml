@@ -1,0 +1,36 @@
+---
+# Source: jke-application/templates/31-application-relationship-web.yaml
+apiVersion: mcm.ibm.com/v1alpha1
+kind: ApplicationRelationship
+metadata:
+  namespace: jke-app
+  name: jke-deployment-web
+  labels:
+    app: jke-application
+    name: jke-deployment-web
+spec:
+  type: contains
+  destination:
+    kind: Deployable
+    name: jke-deployable-deployment-web
+  source:
+    kind: Application
+    name: jke-application
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: ApplicationRelationship
+metadata:
+  namespace: jke-app
+  name: jke-service-web
+  labels:
+    app: jke-application
+    name: jke-service-web
+spec:
+  type: contains
+  destination:
+    kind: Deployable
+    name: jke-deployable-service-web
+  source:
+    kind: Application
+    name: jke-application
+---

@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="dijit/themes/dijit.css">
+<link rel="stylesheet" type="text/css" href="dijit/themes/tundra/tundra.css">
+<link rel="stylesheet" href="style/jkeweb.css" type="text/css">
+<link rel="shortcut icon" HREF="favicon.jpg">
+<title>JKE Banking</title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script src="dojo/dojo.js"
+	type="text/javascript" djconfig="isDebug: true, parseOnLoad: true"></script>
+	
+<script type="text/javascript">
+dojo.require("dojo.parser");
+dojo.require("dijit.layout.BorderContainer");
+dojo.require("dijit.layout.ContentPane");
+dojo.require("dijit.form.TextBox");
+dojo.require("dijit.form.Button");
+dojo.require("dijit.TitlePane");
+dojo.require("dijit.form.Form");
+
+dojo.registerModulePath("com.jke", "../com/jke");
+dojo.require("com.jke.AppController");
+
+dojo.addOnLoad( function() {
+	com.jke.AppController.reloadPage();
+	dojo.subscribe("dojo/hashchange", this, com.jke.AppController.reloadPage);
+
+	// wire up some action
+	dojo.connect(dojo.byId("loginButton"), "onclick",
+				dojo.hitch(this, function(event) {
+					var name = dojo.byId("usernameBox").value;
+					com.jke.AppController.login(name);
+				}));
+
+	dojo.connect(dojo.byId("logoutButton"), "onclick", com.jke.AppController.logout);
+	dojo.connect(dojo.byId('dividendContLink'), "onclick", com.jke.AppController.showDonationWizard);
+    dojo.connect(dojo.byId('interestRateLink'), "onclick", com.jke.AppController.showInterestRateWizard);
+    dojo.connect(dojo.byId('stockLink'), "onclick", com.jke.AppController.showStockWizard);
+
+	dojo.connect(dojo.byId('openNewAccountLink'), "onclick", com.jke.AppController.showCreateAccountWizard);
+	dojo.connect(dojo.byId('approveNewAccountsLink'), "onclick", com.jke.AppController.showAccountListNewWizard);
+	dojo.connect(dojo.byId('viewNewAccountsLink'), "onclick", com.jke.AppController.showAccountListNewWizard);
+	dojo.connect(dojo.byId('viewAccountsLink'), "onclick", com.jke.AppController.showAccountListWizard);
+
+	dojo.connect(dojo.byId('viewAccountSummaryLink'), "onclick", com.jke.AppController.showAccountSummaryWizard);
+
+	// only show the page after it is fully rendered
+	dojo.style("mainLayout", "visibility", "visible");
+});
+</script>
+</head>
+<body class="tundra">
+<div dojoType="dijit.layout.BorderContainer" id="mainLayout"
+	design="headline" style="height: 100%; width: 1200px; visibility: hidden;" gutters="false">
+<!-- HEADER -->
+<div dojoType="dijit.layout.ContentPane" region="top" id="header" style="cursor:pointer;">
+    <div id="headerDefault" style="display: block;"></div>
+    <div id="headerInternal" style="display: block;"></div>
+    <div id="headerExternal" style="display: none;"></div>
+</div>
+
+<!-- SIDEBAR -->
+<div dojoType="dijit.layout.ContentPane" region="left" id="sidebar">
+	<!-- login pane -->
+	<div dojotype="dijit.TitlePane" title="Account Access" class="portlet titlePaneTitleDefault" id="accountAccessPortlet" toggleable="false">
+        <div id="loginContent" style="display: none">
+            <span id="loginError">Username or password is incorrect !!!</span>
+            <div dojoType="dijit.form.Form" id="loginForm">
+                <label for="usernameBox">Username:</label>
+                <input dojoType="dijit.form.TextBox" id="usernameBox" style="width: 170px; margin-top: 2px; margin-bottom: 5px;" name="username">
+                <label for="passwordBox">Password:</label>
+                <input dojotype="dijit.form.TextBox" id="passwordBox" style="width: 170px; margin-top: 2px; margin-bottom: 5px;" name="password" type="password">
+            </div>
+            <button dojoType="dijit.form.Button" label="Log in" id="loginButton"></button>
+            <br><br>
+            <a href="#">I forgot my login names and password </a>
+        </div>
+        <div id="loggedInContent" style="display: none">
+            <p>Welcome, <span id="usersName"></span></p>
+            <button dojoType="dijit.form.Button" label="Logout" id="logoutButton"></button>
+        </div>
+	</div>
+	
+	<!-- Transactions portlet -->
+	<div dojotype="dijit.TitlePane" title="Transactions" class="portlet titlePaneTitleExternal" toggleable="false" id="transactionsPortlet" style="display: none">
+        <ul class="linkList">
+            <li><a id="viewAccountSummaryLink">Account Summary</a></li>
+        </ul>
+		<ul class="linkList">
+			<li><a id="dividendContLink">Dividend Contribution</a></li>
+		</ul>
+    </div>
+
+    <!-- Accounts Management portlet -->
+    <div dojotype="dijit.TitlePane" title="Account Management" class="portlet titlePaneTitleInternal" toggleable="false" id="accountManagementPortlet" style="display: none">
+        <ul class="linkList"  id="openNewAccountLinkDiv">
+            <li><a id="openNewAccountLink">Open New Account</a></li>
+        </ul>
+        <ul class="linkList"  id="approveNewAccountsLinkDiv">
+            <li><a id="approveNewAccountsLink">Approve New Accounts</a></li>
+        </ul>
+        <ul class="linkList"  id="viewNewAccountsLinkDiv">
+            <li><a id="viewNewAccountsLink">View New Accounts</a></li>
+        </ul>
+        <ul class="linkList"  id="viewAccountsLinkDiv">
+            <li><a id="viewAccountsLink">View Accounts</a></li>
+        </ul>
+    </div>
+
+    <!--Information portlet -->
+    <div dojotype="dijit.TitlePane" title="Information" class="portlet titlePaneTitleExternal" toggleable="false" id="informationPortlet" style="display: none">
+        <ul class="linkList">
+            <li><a id="interestRateLink">Interest Rates</a></li>
+        </ul>
+        <ul class="linkList">
+            <li><a id="stockLink">Stock</a></li>
+        </ul>
+    </div>
+</div>
+
+<!-- MAIN CONTENT AREA -->
+<div dojoType="dijit.layout.ContentPane" region="center" id="mainContent">
+    <div id="bigBanner"></div>
+	<div id="functionalArea">
+	</div>
+</div>
+
+<!-- FOOTER -->
+<div dojoType="dijit.layout.ContentPane" region="bottom" id="footer">
+	<div id="sitemap">
+		<ul>
+			<li><a href="#">Home</a></li>
+			<li><a href="#">Financial Policies</a></li>
+			<li><a href="#">My Account</a></li>
+			<li><a href="#">Privacy Policy</a></li>
+			<li><a href="#">Customer Service</a></li>
+			<li><a href="#">Branch Locator</a></li>
+		</ul>
+	</div>
+	<div id="boilerplate">Copyright 2019, IBM</div> <span id="serverInfo"></span>
+</div>
+</div>
+
+</body>
+</html>

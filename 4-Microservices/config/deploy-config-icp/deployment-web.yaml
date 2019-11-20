@@ -1,0 +1,105 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jke-web
+  namespace: hclapp
+  labels:
+    app: jke-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jke-web
+  template:
+    metadata:
+      labels:
+        app: jke-web
+    spec:
+      containers:
+        - image: mycluster.icp:8500/hclapp/jke-web:latest
+          name: jke-web
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: http-server
+      # imagePullSecrets:
+      #   - name: docker-secret
+          env:
+            # General
+            - name: server.port
+              valueFrom:
+                configMapKeyRef:
+                  name: jke-configmap
+                  key: server.port.web
+            # DB2 Database
+            - name: spring.dbprob.type
+              valueFrom:
+                configMapKeyRef:
+                  name: jke-configmap
+                  key: spring.dbprob.type
+            - name: spring.dbprob.protocol
+              valueFrom:
+                configMapKeyRef:
+                  name: jke-configmap
+                  key: spring.dbprob.protocol
+            - name: spring.dbprob.hostname
+              valueFrom:
+                secretKeyRef:
+                  name: jke-secret
+                  key: spring.dbprob.hostname
+            - name: spring.dbprob.port
+              valueFrom:
+                secretKeyRef:
+                  name: jke-secret
+                  key: spring.dbprob.port
+            - name: spring.dbprob.dbname
+              valueFrom:
+                configMapKeyRef:
+                  name: jke-configmap
+                  key: spring.dbprob.dbname
+            - name: spring.datasource.url
+              valueFrom:
+                secretKeyRef:
+                  name: jke-secret
+                  key: spring.datasource.url
+            - name: spring.datasource.driver-class-name
+              valueFrom:
+                configMapKeyRef:
+                  name: jke-configmap
+                  key: spring.datasource.driver-class-name
+            - name: spring.datasource.username
+              valueFrom:
+                configMapKeyRef:
+                  name: jke-configmap
+                  key: spring.datasource.username
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: jke-secret
+                  key: spring.datasource.password
+            # MQ
+            - name: ibm.mq.queueManager
+              valueFrom:
+                configMapKeyRef:
+                  name: jke-configmap
+                  key: ibm.mq.queueManager
+            - name: ibm.mq.channel
+              valueFrom:
+                configMapKeyRef:
+                  name: jke-configmap
+                  key: ibm.mq.channel
+            - name: ibm.mq.connName
+              valueFrom:
+                secretKeyRef:
+                  name: jke-secret
+                  key: ibm.mq.connName
+            - name: ibm.mq.user
+              valueFrom:
+                configMapKeyRef:
+                  name: jke-configmap
+                  key: ibm.mq.user
+            - name: ibm.mq.password
+              valueFrom:
+                secretKeyRef:
+                  name: jke-secret
+                  key: ibm.mq.password

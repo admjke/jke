@@ -1,0 +1,1 @@
+JKE application's prerequisite is deployed.

@@ -1,0 +1,27 @@
+# Default values for myhelmchartplanet.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+projectName: jke3
+
+projectNameWeb: jke3-web
+projectNameMQ: jke3-mq
+projectNameAPI: jke3-api
+projectNameBankStreet: jke3-bankstreet
+
+nameSpace: jke3
+
+dockerImageNameWeb : gandigit/jke-web:latest
+dockerImageNameMQ : gandigit/jke-mq:latest
+dockerImageNameAPI : gandigit/jke-api:latest
+dockerImageNameBankStreet : gandigit/jke-bankstreet:latest
+
+
+nodePortWeb : 30031
+nodePortMQ : 30032
+nodePortAPI : 30033
+nodePortBankStreet : 30034
+
+
+
+

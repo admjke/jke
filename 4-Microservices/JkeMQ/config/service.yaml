@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: <PROJECT>-mq
+  # namespace: <PROJECT>
+  labels:
+    app: <PROJECT>-mq
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      nodePort: 30032
+      port: 80
+      targetPort: 8085
+  selector:
+    app: <PROJECT>-mq
+
+# Note : Springboot apps runs in 8085

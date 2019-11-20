@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jke-configmap
+  namespace: hclapp
+  labels:
+    app: jke-mq
+# type: Opaque
+data:
+  spring.dbprob.type: db2
+  spring.dbprob.protocol: jdbc:db2
+  spring.dbprob.dbname: jkedb
+  spring.datasource.driver-class-name: com.ibm.db2.jcc.DB2Driver
+  spring.datasource.username: db2inst
+  ibm.mq.queueManager: qmgr
+  ibm.mq.channel: DEV.APP.SVRCONN
+  ibm.mq.user: admin
+  server.port.web: "8045"
+  server.port.mq: "8046"
+  server.port.api: "8047"
+

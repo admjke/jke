@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: <PROJECT>-mq
+  # namespace: <PROJECT>
+  labels:
+    app: <PROJECT>-mq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: <PROJECT>-mq
+  template:
+    metadata:
+      labels:
+        app: <PROJECT>-mq
+    spec:
+      containers:
+        - image: <DOCKER_IMAGE>
+          name: <PROJECT>-mq
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: http-server
+      imagePullSecrets:
+        - name: <PROJECT>-secret

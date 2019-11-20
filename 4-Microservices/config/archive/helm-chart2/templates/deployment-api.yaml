@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Values.projectNameAPI }}
+  # namespace: {{ .Values.nameSpace }}
+  labels:
+    app: {{ .Values.projectNameAPI }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.projectNameAPI }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.projectNameAPI }}
+    spec:
+      containers:
+        - image: {{ .Values.dockerImageNameAPI }}
+          name: {{ .Values.projectNameAPI }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: http-server
+      imagePullSecrets:
+        - name: {{ .Values.dockerImagePullSecretName }}

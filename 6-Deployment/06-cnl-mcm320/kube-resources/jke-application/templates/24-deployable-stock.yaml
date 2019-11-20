@@ -1,0 +1,82 @@
+---
+# Source: jke-application/templates/24-deployable-stock.yaml
+apiVersion: mcm.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  namespace: jke-app
+  name: jke-deployable-deployment-stock
+  labels:
+    app: jke-application
+    servicekind: ApplicationService
+spec:
+  deployer:
+    kind: Deployment
+    kube:
+      namespace: jke-app
+      template:
+        metadata:
+          name: jke-stock
+        spec:
+          selector:
+            matchLabels:
+              app: jke-application
+              release: release-name
+              subname: stock
+          replicas: 1
+          template:
+            metadata:
+              labels:
+                app: jke-application
+                release: release-name
+                subname: stock
+            spec:
+              containers:
+                - name: jke-application
+                  image: "gandigit/jke-stock:latest"
+                  imagePullPolicy: Always
+                  ports:
+                    - name: http
+                      containerPort: 9033
+                      protocol: TCP
+                    - name: https
+                      containerPort: 8082
+                  env:
+                  - name: GET_HOSTS_FROM
+                    value: dns
+              imagePullSecrets:
+                - name: jke-prerequisite-icp-ocp-image-pull-secret
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: jke-deployable-service-stock
+  labels:
+    app: jke-application
+    name: jke-deployable-service-stock
+    servicekind: ApplicationService
+spec:
+  deployer:
+    kind: Service
+    kube:
+      namespace: jke-app
+      template:
+        metadata:
+          name: jke-stock
+          labels:
+            app: jke-application
+          annotations:
+            prometheus.io/scrape: 'true' 
+            prometheus.io/port: '9033'
+            prometheus.io/path: '/actuator/prometheus'
+            mcm.ibm.com/service-discovery: "{}"            
+        spec:
+          type: NodePort
+          ports:
+            - name: my-http
+              port: 9033
+              targetPort: 9033
+              nodePort: 31333
+          selector:
+            app: jke-application
+            release: release-name
+            subname: stock

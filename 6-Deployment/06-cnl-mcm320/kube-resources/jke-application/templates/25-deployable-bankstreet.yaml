@@ -1,0 +1,134 @@
+---
+# Source: jke-application/templates/25-deployable-bankstreet.yaml
+apiVersion: mcm.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  namespace: jke-app
+  name: jke-deployable-deployment-bankstreet
+  labels:
+    app: jke-application
+    servicekind: ApplicationService
+spec:
+  deployer:
+    kind: Deployment
+    kube:
+      namespace: jke-app
+      template:
+        metadata:
+          name: jke-bankstreet
+        spec:
+          selector:
+            matchLabels:
+              app: jke-application
+              release: release-name
+              subname: bankstreet
+          replicas: 1
+          template:
+            metadata:
+              labels:
+                app: jke-application
+                release: release-name
+                subname: bankstreet
+            spec:
+              containers:
+                - name: jke-application
+                  image: "gandigit/jke-bankstreet:latest"
+                  imagePullPolicy: Always
+                  ports:
+                    - name: http
+                      containerPort: 8048
+                      protocol: TCP
+                    - name: https
+                      containerPort: 8082
+                  env:
+                  - name: GET_HOSTS_FROM
+                    value: dns
+                  # API URLs
+                  - name: jke.api.service.url.all
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: jke.service.url.interest.all
+                  - name: jke.api.service.url.fd
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: jke.service.url.interest.fd
+                  - name: jke.api.service.url.rd
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: jke.service.url.interest.rd
+                  - name: jke.service.url.stock.all
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: jke.service.url.stock.all
+                  # DB2 Database
+                  - name: spring.dbprob.hostname
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: spring.dbprob.hostname
+                  - name: spring.dbprob.port
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: spring.dbprob.port
+                  - name: spring.dbprob.dbname
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: spring.dbprob.dbname
+                  - name: spring.datasource.url
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: spring.datasource.url
+                  - name: spring.datasource.username
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: spring.datasource.username
+                  - name: spring.datasource.password
+                    valueFrom:
+                      configMapKeyRef:
+                        name: jke-config-map
+                        key: spring.datasource.password
+              imagePullSecrets:
+                - name: jke-prerequisite-icp-ocp-image-pull-secret
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: jke-deployable-service-bankstreet
+  labels:
+    app: jke-application
+    name: jke-deployable-service-bankstreet
+    servicekind: ApplicationService
+spec:
+  deployer:
+    kind: Service
+    kube:
+      namespace: jke-app
+      template:
+        metadata:
+          name: jke-bankstreet
+          labels:
+            app: jke-application
+          annotations:
+            prometheus.io/scrape: 'true' 
+            prometheus.io/port: '8048'
+            prometheus.io/path: '/actuator/prometheus'
+            mcm.ibm.com/service-discovery: "{}"            
+        spec:
+          type: NodePort
+          ports:
+            - name: my-http
+              port: 8048
+              targetPort: 8048
+              nodePort: 31334
+          selector:
+            app: jke-application
+            release: release-name
+            subname: bankstreet

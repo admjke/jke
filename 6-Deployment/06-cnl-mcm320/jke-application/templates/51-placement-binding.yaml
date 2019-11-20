@@ -1,0 +1,100 @@
+apiVersion: mcm.ibm.com/v1alpha1
+kind: PlacementBinding
+metadata:
+  namespace: {{ .Values.nameSpace }}
+  name: jke-web
+  labels:
+    app: jke-application
+    name: jke-web
+placementRef:
+  apiGroup: mcm.ibm.com
+  kind: PlacementPolicy
+  name: jke-web
+subjects:
+- apiGroup: mcm.ibm.com
+  kind: Deployable
+  name: jke-deployable-deployment-web
+- apiGroup: mcm.ibm.com
+  kind: Deployable
+  name: jke-deployable-service-web
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: PlacementBinding
+metadata:
+  namespace: {{ .Values.nameSpace }}
+  name: jke-batch
+  labels:
+    app: jke-application
+    name: jke-batch
+placementRef:
+  apiGroup: mcm.ibm.com
+  kind: PlacementPolicy
+  name: jke-batch
+subjects:
+- apiGroup: mcm.ibm.com
+  kind: Deployable
+  name: jke-deployable-deployment-batch
+- apiGroup: mcm.ibm.com
+  kind: Deployable
+  name: jke-deployable-service-batch
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: PlacementBinding
+metadata:
+  namespace: {{ .Values.nameSpace }}
+  name: jke-interest
+  labels:
+    app: jke-application
+    name: jke-interest
+placementRef:
+  apiGroup: mcm.ibm.com
+  kind: PlacementPolicy
+  name: jke-interest
+subjects:
+- apiGroup: mcm.ibm.com
+  kind: Deployable
+  name: jke-deployable-deployment-interest
+- apiGroup: mcm.ibm.com
+  kind: Deployable
+  name: jke-deployable-service-interest
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: PlacementBinding
+metadata:
+  namespace: {{ .Values.nameSpace }}
+  name: jke-stock
+  labels:
+    app: jke-application
+    name: jke-stock
+placementRef:
+  apiGroup: mcm.ibm.com
+  kind: PlacementPolicy
+  name: jke-stock
+subjects:
+- apiGroup: mcm.ibm.com
+  kind: Deployable
+  name: jke-deployable-deployment-stock
+- apiGroup: mcm.ibm.com
+  kind: Deployable
+  name: jke-deployable-service-stock
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: PlacementBinding
+metadata:
+  namespace: {{ .Values.nameSpace }}
+  name: jke-bankstreet
+  labels:
+    app: jke-application
+    name: jke-bankstreet
+placementRef:
+  apiGroup: mcm.ibm.com
+  kind: PlacementPolicy
+  name: jke-bankstreet
+subjects:
+- apiGroup: mcm.ibm.com
+  kind: Deployable
+  name: jke-deployable-deployment-bankstreet
+- apiGroup: mcm.ibm.com
+  kind: Deployable
+  name: jke-deployable-service-bankstreet
+

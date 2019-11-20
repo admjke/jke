@@ -1,0 +1,21 @@
+.CreateAccountWizard {
+	 
+}
+	
+.CreateAccountWizard .wizard {
+	margin-left: 30px;
+	height: 350px;
+	width: 400px;
+}
+
+.CreateAccountWizard .page {
+	padding: 5px;
+}
+
+.CreateAccountWizard .label {
+	width: 150px;
+}
+
+.CreateAccountWizard H3 {
+	margin-top: 5px;
+}

@@ -1,0 +1,80 @@
+apiVersion: mcm.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  namespace: {{ .Values.nameSpace }}
+  name: jke-deployable-deployment-interest
+  labels:
+    app: jke-application
+    servicekind: ApplicationService
+spec:
+  deployer:
+    kind: Deployment
+    kube:
+      namespace: {{ .Values.nameSpace }}
+      template:
+        metadata:
+          name: jke-interest
+        spec:
+          selector:
+            matchLabels:
+              app: jke-application
+              release: {{ .Release.Name }}
+              subname: interest
+          replicas: {{ .Values.replicaCountInterest }}
+          template:
+            metadata:
+              labels:
+                app: jke-application
+                release: {{ .Release.Name }}
+                subname: interest
+            spec:
+              containers:
+                - name: {{ .Chart.Name }}
+                  image: "{{ .Values.imageRepositoryInterest }}:latest"
+                  imagePullPolicy: Always
+                  ports:
+                    - name: http
+                      containerPort: {{ .Values.serviceTargetPortInterest }}
+                      protocol: TCP
+                    - name: https
+                      containerPort: 8082
+                  env:
+                  - name: GET_HOSTS_FROM
+                    value: dns
+              imagePullSecrets:
+                - name: jke-prerequisite-icp-ocp-image-pull-secret
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: jke-deployable-service-interest
+  labels:
+    app: jke-application
+    name: jke-deployable-service-interest
+    servicekind: ApplicationService
+spec:
+  deployer:
+    kind: Service
+    kube:
+      namespace: {{ .Values.nameSpace }}
+      template:
+        metadata:
+          name: jke-interest
+          labels:
+            app: jke-application
+          annotations:
+            prometheus.io/scrape: 'true' 
+            prometheus.io/port: '{{ .Values.serviceTargetPortInterest }}'
+            prometheus.io/path: '/actuator/prometheus'
+            mcm.ibm.com/service-discovery: "{}"            
+        spec:
+          type: {{ .Values.serviceTypeInterest }}
+          ports:
+            - name: my-http
+              port: {{ .Values.serviceTargetPortInterest }}
+              targetPort: {{ .Values.serviceTargetPortInterest }}
+              nodePort: {{ .Values.serviceNodePortInterest }}
+          selector:
+            app: jke-application
+            release: {{ .Release.Name }}
+            subname: interest

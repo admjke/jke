@@ -1,0 +1,39 @@
+---
+# Source: jke-prerequisite/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jke-config-map
+  namespace: 
+  labels:
+    app: jke-config-map
+    name: jke-config-map
+# type: Opaque
+data:
+# MQ 
+  ibm.mq.channel: DEV.APP.SVRCONN
+  ibm.mq.queueName.req: JKE.ACCT.REQ
+  ibm.mq.queueName.int: JKE.ACCT.INT
+  ibm.mq.queueName.res: JKE.ACCT.RES
+# MQ
+  ibm.mq.queueManager: QM1
+  ibm.mq.connName:  icp-console.apps.ocp.uk.hclcnlabs.com(32443)
+# MQ
+  jke.mq.ace.enabled: "true"
+# API Service URLs
+  jke.service.url.interest.all: "https://apigw.apps.ocp.uk.hclcnlabs.com/demo/dev/jkeinterest/api/interest/interestRates"
+  jke.service.url.interest.fd: "https://apigw.apps.ocp.uk.hclcnlabs.com/demo/dev/jkeinterest/api/interest//interestRatesByCategory?category=FD"
+  jke.service.url.interest.rd: "https://apigw.apps.ocp.uk.hclcnlabs.com/demo/dev/jkeinterest/api/interest//interestRatesByCategory?category=RD"
+ 
+  jke.service.url.stock.all: "http://icp-console.apps.ocp.uk.hclcnlabs.com:31333/jkestock/api/stock/stocks"
+# Notification
+  jke.notification.enabled: "true"
+  jke.notification.from: <<TO_BE_REPLACED>>
+  jke.notification.sendgrid.key: <<TO_BE_REPLACED>>
+# DB
+  spring.dbprob.hostname: "172.16.70.101"
+  spring.dbprob.port: "60006"
+  spring.dbprob.dbname: r1ilon3
+  spring.datasource.username: db2inst1
+  spring.datasource.password: "db2inst1"
+  spring.datasource.url: jdbc:db2://172.16.70.101:60006/r1ilon3

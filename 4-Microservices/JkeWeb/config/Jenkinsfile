@@ -1,0 +1,63 @@
+node {
+    def APP_NAME = "jke-web"
+    def IMAGE_TAG_NAME = "${env.JKEAPP_DOCKER_REGISTRY}/${env.JKEAPP_NAMESPACE}/jke-web:latest"
+    def DOCKER_REGISTRY = "${env.JKEAPP_DOCKER_REGISTRY}"
+    def NAMESPACE = "${env.JKEAPP_NAMESPACE}"
+
+    stage("Compile") {
+        sh 'echo "Compile Started ...."'
+        checkout scm
+        sh "cp -r 4-Microservices/JkeWeb/* ./"
+        sh "./gradlew compileJava"
+        sh 'echo "Compile Completed ...."'
+    }
+
+    stage("Package") {
+        sh 'echo "Package Started ...."'
+        sh "./gradlew build"
+        sh 'echo "Package Completed ...."'
+    }
+
+    stage("Docker build") {
+        sh 'echo "build Started ...."'
+        sh "docker build -f config/Dockerfile -t ${IMAGE_TAG_NAME} ."
+        sh 'echo "build Completed ...."'
+    }
+
+    stage('Docker push') {
+        withCredentials([usernamePassword(credentialsId: 'jke-credentials',
+                                        usernameVariable: 'USERNAME',
+                                        passwordVariable: 'PASSWORD')]) {
+            sh """
+            #!/bin/bash
+
+            echo "docker push  Started ...."
+            docker login -u ${USERNAME} -p ${PASSWORD} ${DOCKER_REGISTRY}
+            docker push ${IMAGE_TAG_NAME}
+            echo "docker push  completed ...."
+            """
+        }
+    }
+
+//    stage("Deploy new Docker Image") {
+//        sh """
+//        #!/bin/bash
+//        echo "Deploy Started ...."
+//        DEPLOYMENT=`kubectl --namespace=${NAMESPACE} get deployments -l app=${APP_NAME} -o name`
+//        kubectl --namespace=${NAMESPACE} get \${DEPLOYMENT}
+//        if [ \${?} -ne "0" ]; then
+//            # No deployment to update
+//            echo 'No deployment to update'
+//            exit 1
+//        fi
+
+//        # Update deployment and check rollout status
+//        kubectl --namespace=${NAMESPACE} set image \${DEPLOYMENT} ${APP_NAME}=${:latest}
+//        kubectl --namespace=${NAMESPACE} rollout status \${DEPLOYMENT}
+
+//        echo "Deploy Completed ...."
+//        """
+//    }
+//   }
+
+}

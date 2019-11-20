@@ -1,0 +1,36 @@
+---
+# Source: jke-application/templates/33-application-relationship-interest.yaml
+apiVersion: mcm.ibm.com/v1alpha1
+kind: ApplicationRelationship
+metadata:
+  namespace: jke-app
+  name: jke-deployment-interest
+  labels:
+    app: jke-application
+    name: jke-deployment-interest
+spec:
+  type: contains
+  destination:
+    kind: Deployable
+    name: jke-deployable-deployment-interest
+  source:
+    kind: Application
+    name: jke-application
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: ApplicationRelationship
+metadata:
+  namespace: jke-app
+  name: jke-service-interest
+  labels:
+    app: jke-application
+    name: jke-service-interest
+spec:
+  type: contains
+  destination:
+    kind: Deployable
+    name: jke-deployable-service-interest
+  source:
+    kind: Application
+    name: jke-application
+---

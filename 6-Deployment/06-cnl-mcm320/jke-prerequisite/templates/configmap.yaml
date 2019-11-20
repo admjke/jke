@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jke-config-map
+  namespace: {{ .Values.nameSpaceChannel }}
+  labels:
+    app: jke-config-map
+    name: jke-config-map
+# type: Opaque
+data:
+# MQ 
+  ibm.mq.channel: {{ .Values.mqChannel }}
+  ibm.mq.queueName.req: {{ .Values.mqQueueNameReq }}
+  ibm.mq.queueName.int: {{ .Values.mqQueueNameInt }}
+  ibm.mq.queueName.res: {{ .Values.mqQueueNameRes }}
+# MQ
+  ibm.mq.queueManager: {{ .Values.mqQueueManager }}
+  ibm.mq.connName:  {{ .Values.mqHostName }}({{ .Values.mqPort }})
+# MQ
+  jke.mq.ace.enabled: {{ .Values.jkeMqAceEnabled | quote  }}
+# API Service URLs
+  jke.service.url.interest.all: {{ .Values.jkeServiceUrlInterestAll | quote }}
+  jke.service.url.interest.fd: {{ .Values.jkeServiceUrlInterestFD | quote }}
+  jke.service.url.interest.rd: {{ .Values.jkeServiceUrlInterestRD | quote }}
+ 
+  jke.service.url.stock.all: {{ .Values.jkeServiceUrlStockAll | quote }}
+# Notification
+  jke.notification.enabled: {{ .Values.jkeNotificationEnabled | quote }}
+  jke.notification.from: {{ .Values.jkeNotificationFrom }}
+  jke.notification.sendgrid.key: {{ .Values.jkeNotificationSendgridKey }}
+# DB
+  spring.dbprob.hostname: {{ .Values.dbHostName | quote }}
+  spring.dbprob.port: {{ .Values.dbPort | quote }}
+  spring.dbprob.dbname: {{ .Values.dbName }}
+  spring.datasource.username: {{ .Values.dbUsername }}
+  spring.datasource.password: {{ .Values.dbPassword | quote }}
+  spring.datasource.url: jdbc:db2://{{ .Values.dbHostName }}:{{ .Values.dbPort }}/{{ .Values.dbName }}
